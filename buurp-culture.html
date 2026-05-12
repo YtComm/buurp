@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BUURP — The Culture Book</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Syne:wght@400;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black:  #080808;
+      --lime:   #C9F135;
+      --orange: #FF4D1C;
+      --cream:  #F2EDE3;
+      --pink:   #FF2B6E;
+      --blue:   #00CFFF;
+      --coffee: #C47A2A;
+      --dim:    rgba(242,237,227,0.45);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--cream);
+      font-family: 'Syne', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ─── NOISE ─── */
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: 999; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+      opacity: 0.04;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.2rem 3rem;
+      background: linear-gradient(to bottom, rgba(8,8,8,0.97) 0%, transparent 100%);
+      backdrop-filter: blur(4px);
+    }
+
+    .nav-logo img { height: 32px; width: auto; mix-blend-mode: lighten; }
+
+    .nav-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: rgba(242,237,227,0.3);
+    }
+
+    .nav-label span { color: var(--lime); }
+
+    .nav-right {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(242,237,227,0.3);
+    }
+
+    /* ─── COVER ─── */
+    #cover {
+      position: relative; min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      overflow: hidden; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .cover-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 30% 50%, rgba(201,241,53,0.06) 0%, transparent 60%),
+                  radial-gradient(ellipse at 80% 20%, rgba(255,43,110,0.04) 0%, transparent 50%);
+    }
+
+    .cover-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem; letter-spacing: 0.4em; text-transform: uppercase;
+      color: rgba(242,237,227,0.3); margin-bottom: 2rem;
+      animation: fade-up 0.8s 0.2s both;
+    }
+
+    .cover-logo {
+      animation: fade-up 0.9s 0.4s both;
+    }
+
+    .cover-logo img {
+      width: clamp(300px, 60vw, 800px);
+      height: auto; mix-blend-mode: lighten;
+      filter: drop-shadow(0 0 80px rgba(201,241,53,0.15));
+    }
+
+    .cover-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1rem, 2.5vw, 1.8rem);
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: rgba(242,237,227,0.2); margin-top: 2rem;
+      animation: fade-up 0.8s 0.7s both;
+    }
+
+    .cover-title span { color: var(--lime); opacity: 0.7; }
+
+    .cover-meta {
+      position: absolute; bottom: 3rem; left: 0; right: 0;
+      display: flex; justify-content: space-between;
+      padding: 0 3rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(242,237,227,0.2);
+      animation: fade-up 0.8s 1s both;
+    }
+
+    @keyframes fade-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ─── CHAPTER DIVIDERS ─── */
+    .chapter-divider {
+      padding: 5rem 3rem 2rem;
+      display: flex; align-items: flex-end; gap: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .chapter-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 6rem; line-height: 1;
+      color: rgba(255,255,255,0.04); flex-shrink: 0;
+    }
+
+    .chapter-info { padding-bottom: 0.5rem; }
+
+    .chapter-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--lime); margin-bottom: 0.4rem;
+    }
+
+    .chapter-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      line-height: 0.9; letter-spacing: 0.03em; color: var(--cream);
+    }
+
+    /* ─── SECTION BASE ─── */
+    .section {
+      padding: 4rem 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.5rem, 4vw, 3rem);
+      letter-spacing: 0.05em; margin-bottom: 1.5rem;
+    }
+
+    .section-body {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.9rem; line-height: 1.9;
+      color: var(--dim); max-width: 720px;
+    }
+
+    .section-body strong { color: var(--cream); font-weight: 500; }
+    .section-body em { color: var(--lime); font-style: normal; }
+
+    /* ─── MANIFESTO BLOCK ─── */
+    #manifesto-block {
+      padding: 6rem 3rem;
+      display: flex; flex-direction: column; gap: 0;
+    }
+
+    .manifesto-line {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 8vw, 8rem);
+      line-height: 0.92; letter-spacing: 0.02em;
+      color: var(--cream);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding: 1rem 0;
+      opacity: 0; transform: translateX(-20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .manifesto-line.visible { opacity: 1; transform: translateX(0); }
+
+    .manifesto-line:nth-child(2) { transition-delay: 0.1s; color: var(--lime); }
+    .manifesto-line:nth-child(3) { transition-delay: 0.2s; }
+    .manifesto-line:nth-child(4) { transition-delay: 0.3s; color: var(--orange); }
+    .manifesto-line:nth-child(5) { transition-delay: 0.4s; }
+    .manifesto-line:nth-child(6) { transition-delay: 0.5s; color: var(--pink); }
+
+    /* ─── BRAND IDENTITY ─── */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem; margin-top: 2rem;
+    }
+
+    .color-swatch {
+      display: flex; flex-direction: column; gap: 0.8rem;
+    }
+
+    .swatch-block {
+      height: 120px; border-radius: 2px;
+      position: relative; overflow: hidden;
+    }
+
+    .swatch-block::after {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+      opacity: 0.3;
+    }
+
+    .swatch-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem; letter-spacing: 0.1em;
+    }
+
+    .swatch-hex {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem; letter-spacing: 0.1em;
+      color: rgba(242,237,227,0.35);
+    }
+
+    /* ─── TYPOGRAPHY SHOWCASE ─── */
+    .type-showcase {
+      display: flex; flex-direction: column; gap: 3rem; margin-top: 2rem;
+    }
+
+    .type-row {
+      display: grid; grid-template-columns: 200px 1fr;
+      gap: 2rem; align-items: start;
+      border-top: 1px solid rgba(255,255,255,0.06); padding-top: 2rem;
+    }
+
+    .type-meta { padding-top: 0.5rem; }
+
+    .type-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--lime); margin-bottom: 0.4rem;
+    }
+
+    .type-name {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem; color: rgba(242,237,227,0.4);
+      margin-bottom: 0.3rem;
+    }
+
+    .type-use {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem; color: rgba(242,237,227,0.2);
+      letter-spacing: 0.05em;
+    }
+
+    .type-sample-bebas {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 7vw, 6rem);
+      line-height: 0.9; letter-spacing: 0.05em;
+    }
+
+    .type-sample-mono {
+      font-family: 'DM Mono', monospace;
+      font-size: 1rem; line-height: 1.7;
+      color: rgba(242,237,227,0.6);
+    }
+
+    .type-sample-syne {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.5rem, 4vw, 3rem);
+      font-weight: 800; line-height: 1.1;
+    }
+
+    /* ─── LOGO SECTION ─── */
+    .logo-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1px; background: rgba(255,255,255,0.06);
+      margin-top: 2rem; border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .logo-cell {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 4rem 3rem; gap: 1.5rem; position: relative;
+    }
+
+    .logo-cell.dark { background: var(--black); }
+    .logo-cell.light { background: var(--cream); }
+    .logo-cell.lime { background: var(--lime); }
+    .logo-cell.pink { background: var(--pink); }
+
+    .logo-cell img { width: clamp(140px, 25vw, 260px); height: auto; }
+
+    .logo-cell-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+      position: absolute; bottom: 1.2rem; left: 1.5rem;
+      opacity: 0.4;
+    }
+
+    .logo-cell.light .logo-cell-label,
+    .logo-cell.lime .logo-cell-label { color: var(--black); }
+
+    /* ─── DO/DON'T ─── */
+    .do-dont-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2rem; margin-top: 2rem;
+    }
+
+    .do-block, .dont-block {
+      padding: 2rem;
+      border: 1px solid;
+      position: relative;
+    }
+
+    .do-block { border-color: rgba(201,241,53,0.2); background: rgba(201,241,53,0.02); }
+    .dont-block { border-color: rgba(255,77,28,0.2); background: rgba(255,77,28,0.02); }
+
+    .do-label, .dont-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem; letter-spacing: 0.2em;
+      margin-bottom: 1.2rem;
+    }
+
+    .do-label { color: var(--lime); }
+    .dont-label { color: var(--orange); }
+
+    .do-list, .dont-list {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 0.7rem;
+    }
+
+    .do-list li, .dont-list li {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem; line-height: 1.5;
+      color: rgba(242,237,227,0.6);
+      padding-left: 1.2rem; position: relative;
+    }
+
+    .do-list li::before { content: '✓'; position: absolute; left: 0; color: var(--lime); }
+    .dont-list li::before { content: '✗'; position: absolute; left: 0; color: var(--orange); }
+
+    /* ─── SKU CARDS ─── */
+    .sku-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1px; background: rgba(255,255,255,0.06);
+      margin-top: 2rem; border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .sku-card {
+      padding: 3rem 2rem;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 1.5rem; background: var(--black);
+      position: relative; overflow: hidden;
+    }
+
+    .sku-card::before {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+    }
+
+    .sku-card.moksha::before { background: var(--blue); }
+    .sku-card.soma::before { background: var(--lime); }
+    .sku-card.rasa::before { background: var(--pink); }
+    .sku-card.tatva::before { background: var(--coffee); }
+
+    .sku-can { height: 200px; display: flex; align-items: flex-end; justify-content: center; }
+    .sku-can img { height: 100%; width: auto; object-fit: contain; mix-blend-mode: lighten; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.8)); }
+
+    .sku-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem; letter-spacing: 0.1em;
+    }
+
+    .sku-card.moksha .sku-name { color: var(--blue); }
+    .sku-card.soma .sku-name { color: var(--lime); }
+    .sku-card.rasa .sku-name { color: var(--pink); }
+    .sku-card.tatva .sku-name { color: var(--coffee); }
+
+    .sku-flavour {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(242,237,227,0.35); text-align: center; line-height: 1.6;
+    }
+
+    .sku-mood {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.85rem; font-weight: 700;
+      color: rgba(242,237,227,0.7); text-align: center;
+      font-style: italic;
+    }
+
+    .sku-spec {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.55rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(242,237,227,0.15); text-align: center; line-height: 1.8;
+      border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1rem; width: 100%;
+    }
+
+    /* ─── TONE OF VOICE ─── */
+    .tone-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1rem; margin-top: 2rem;
+    }
+
+    .tone-card {
+      padding: 2rem 1.5rem;
+      border: 1px solid rgba(255,255,255,0.07);
+      background: #0d0d0d;
+    }
+
+    .tone-icon {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem; letter-spacing: 0.05em;
+      margin-bottom: 1rem; color: var(--lime);
+    }
+
+    .tone-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem; letter-spacing: 0.05em;
+      margin-bottom: 0.8rem; color: var(--cream);
+    }
+
+    .tone-body {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem; line-height: 1.7;
+      color: rgba(242,237,227,0.45);
+    }
+
+    .tone-example {
+      margin-top: 1.2rem; padding: 0.8rem 1rem;
+      border-left: 2px solid var(--lime);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem; font-style: italic;
+      color: rgba(242,237,227,0.6);
+    }
+
+    /* ─── LANGUAGE POSTERS ─── */
+    .poster-strip {
+      display: flex; gap: 0;
+      margin-top: 2rem; overflow-x: auto;
+      scrollbar-width: none; border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .poster-strip::-webkit-scrollbar { display: none; }
+
+    .poster-slot {
+      flex-shrink: 0;
+      width: 340px; height: 480px;
+      position: relative; overflow: hidden;
+      border-right: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .poster-slot img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block; transition: transform 0.5s ease;
+    }
+
+    .poster-slot:hover img { transform: scale(1.03); }
+
+    .poster-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 0.8rem;
+      background: #0d0d0d;
+    }
+
+    .poster-placeholder-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem; line-height: 0.9; letter-spacing: 0.05em;
+      color: rgba(255,255,255,0.05); text-align: center;
+    }
+
+    .poster-placeholder-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(242,237,227,0.15);
+    }
+
+    /* ─── COMMUNITY PHOTO GRID ─── */
+    .photo-strip {
+      display: flex; gap: 1px;
+      background: rgba(255,255,255,0.04);
+      margin-top: 2rem; overflow-x: auto;
+      scrollbar-width: none; cursor: grab;
+    }
+
+    .photo-strip::-webkit-scrollbar { display: none; }
+    .photo-strip.dragging { cursor: grabbing; }
+
+    .photo-slot {
+      flex-shrink: 0; position: relative; overflow: hidden;
+    }
+
+    .photo-slot img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block; filter: brightness(0.8) saturate(0.85);
+      transition: filter 0.4s ease, transform 0.5s ease;
+    }
+
+    .photo-slot:hover img { filter: brightness(1) saturate(1.1); transform: scale(1.03); }
+
+    .photo-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 0.5rem;
+      background: #0d0d0d;
+      border: 1px dashed rgba(255,255,255,0.06);
+    }
+
+    .photo-placeholder svg { opacity: 0.1; }
+
+    .photo-placeholder span {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.55rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(242,237,227,0.15);
+    }
+
+    /* varying sizes */
+    .photo-slot.t { width: 240px; height: 360px; }
+    .photo-slot.w { width: 320px; height: 240px; }
+    .photo-slot.s { width: 260px; height: 260px; }
+    .photo-slot.x { width: 200px; height: 400px; }
+
+    /* ─── PHILOSOPHY STATEMENT ─── */
+    .philosophy-block {
+      padding: 6rem 3rem;
+      display: flex; gap: 6rem; align-items: start;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .philosophy-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 8rem; line-height: 1;
+      color: rgba(255,255,255,0.03); flex-shrink: 0;
+    }
+
+    .philosophy-content {}
+
+    .philosophy-headline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 0.95; letter-spacing: 0.03em;
+      margin-bottom: 1.5rem;
+    }
+
+    .philosophy-body {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.9rem; line-height: 1.9;
+      color: var(--dim); max-width: 600px;
+    }
+
+    .philosophy-body strong { color: var(--cream); }
+
+    /* ─── VISION STATEMENT ─── */
+    .vision-block {
+      padding: 6rem 3rem;
+      text-align: center;
+      background: radial-gradient(ellipse at center, rgba(201,241,53,0.04) 0%, transparent 70%);
+    }
+
+    .vision-quote {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 6vw, 5.5rem);
+      line-height: 0.92; letter-spacing: 0.03em;
+      max-width: 1000px; margin: 0 auto;
+    }
+
+    .vision-quote em { color: var(--lime); font-style: normal; }
+    .vision-quote span { color: var(--pink); }
+
+    /* ─── TICKER ─── */
+    .culture-ticker {
+      overflow: hidden; padding: 1rem 0;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: #060606;
+    }
+
+    .culture-ticker-inner {
+      display: flex; gap: 3rem; white-space: nowrap;
+      animation: ticker 25s linear infinite;
+    }
+
+    .culture-ticker-item {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem; letter-spacing: 0.2em;
+      color: rgba(242,237,227,0.15); flex-shrink: 0;
+    }
+
+    .culture-ticker-item.lit { color: var(--lime); }
+
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ─── FOOTER ─── */
+    .book-footer {
+      padding: 4rem 3rem;
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .book-footer-logo img { height: 60px; width: auto; mix-blend-mode: lighten; }
+
+    .book-footer-right {
+      text-align: right;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(242,237,227,0.2); line-height: 2;
+    }
+
+    /* ─── FULL-BLEED IMAGE SLOT ─── */
+    .full-bleed {
+      width: 100%; position: relative; overflow: hidden;
+    }
+
+    .full-bleed img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      filter: brightness(0.85);
+    }
+
+    .full-bleed-placeholder {
+      width: 100%; height: 500px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 1rem;
+      background: #0d0d0d; border: 1px dashed rgba(255,255,255,0.06);
+    }
+
+    .full-bleed-placeholder-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem; letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.06);
+    }
+
+    .full-bleed-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(242,237,227,0.15);
+    }
+
+    .full-bleed-caption {
+      position: absolute; bottom: 2rem; left: 3rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(242,237,227,0.4);
+    }
+
+    /* ─── SCROLL REVEAL ─── */
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .section { padding: 3rem 1.5rem; }
+      .chapter-divider { padding: 4rem 1.5rem 2rem; }
+      .color-grid { grid-template-columns: repeat(3, 1fr); }
+      .sku-grid { grid-template-columns: repeat(2, 1fr); }
+      .do-dont-grid { grid-template-columns: 1fr; }
+      .tone-grid { grid-template-columns: 1fr; }
+      .logo-grid { grid-template-columns: 1fr; }
+      .type-row { grid-template-columns: 1fr; }
+      .philosophy-block { flex-direction: column; gap: 1rem; padding: 4rem 1.5rem; }
+      .philosophy-num { font-size: 5rem; }
+      .vision-block { padding: 4rem 1.5rem; }
+      .book-footer { flex-direction: column; gap: 2rem; text-align: center; }
+      .book-footer-right { text-align: center; }
+      .cover-meta { padding: 0 1.5rem; }
+    }
+
+    @media (max-width: 600px) {
+      .color-grid { grid-template-columns: repeat(2, 1fr); }
+      .sku-grid { grid-template-columns: 1fr; }
+      .chapter-num { font-size: 4rem; }
+      .manifesto-line { font-size: clamp(2rem, 10vw, 4rem); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo"><img src="./buurp-logo.png" alt="BUURP" /></div>
+    <div class="nav-label">The <span>Culture Book</span></div>
+    <div class="nav-right">V1.0 · 2025</div>
+  </nav>
+
+  <!-- ─── COVER ─── -->
+  <section id="cover">
+    <div class="cover-bg"></div>
+    <div class="cover-eyebrow">India's Only Electrolyte RTD Cocktail</div>
+    <div class="cover-logo">
+      <img src="./buurp-logo.png" alt="BUURP" />
+    </div>
+    <div class="cover-title">The Culture <span>Book</span></div>
+    <div class="cover-meta">
+      <span>Delhi, India · 2025</span>
+      <span>Drink. Belch. Repeat.</span>
+      <span>For internal use & culture partners</span>
+    </div>
+  </section>
+
+  <!-- ─── CHAPTER 01: WHO WE ARE ─── -->
+  <div class="chapter-divider reveal">
+    <div class="chapter-num">01</div>
+    <div class="chapter-info">
+      <div class="chapter-label">Chapter One</div>
+      <div class="chapter-name">Who We Are</div>
+    </div>
+  </div>
+
+  <!-- MANIFESTO -->
+  <div id="manifesto-block">
+    <div class="manifesto-line" data-scroll>We are not a beverage company.</div>
+    <div class="manifesto-line" data-scroll>We are a feeling.</div>
+    <div class="manifesto-line" data-scroll>Built on a cart. Sold on the street.</div>
+    <div class="manifesto-line" data-scroll>Desi flavours. Zero apology.</div>
+    <div class="manifesto-line" data-scroll>Vibes in. Hangovers out.</div>
+    <div class="manifesto-line" data-scroll>Drink. Belch. Repeat.</div>
+  </div>
+
+  <!-- VISION -->
+  <div class="vision-block reveal">
+    <div class="vision-quote">
+      We built <em>BUURP</em> because India's party culture deserved something <span>honest</span> — a drink that hydrates while it celebrates, that tastes like home and hits like a night you won't forget.
+    </div>
+  </div>
+
+  <!-- PHILOSOPHY PILLARS -->
+  <div class="philosophy-block reveal">
+    <div class="philosophy-num">01</div>
+    <div class="philosophy-content">
+      <h3 class="philosophy-headline" style="color: var(--lime);">Electrolytes First. Always.</h3>
+      <p class="philosophy-body">Every RTD cocktail in India is sugar water with alcohol. We said no. We <strong>built our base around 220mg of electrolytes</strong> — sodium, potassium, magnesium — so the drink actually does something good for you while you party. Nobody else tried it. We did it first.</p>
+    </div>
+  </div>
+
+  <div class="philosophy-block reveal">
+    <div class="philosophy-num">02</div>
+    <div class="philosophy-content">
+      <h3 class="philosophy-headline" style="color: var(--orange);">Desi Flavours Are Premium.</h3>
+      <p class="philosophy-body">Kokum. Tamarind. Hibiscus. Cardamom. Kala namak. These are not "ethnic" — these are <strong>world-class ingredients</strong> that Indian craft bars charge ₹800 to use. We put them in a can and sold them on a cart. Nostalgia and nightlife, same sip.</p>
+    </div>
+  </div>
+
+  <div class="philosophy-block reveal">
+    <div class="philosophy-num">03</div>
+    <div class="philosophy-content">
+      <h3 class="philosophy-headline" style="color: var(--pink);">The Cart Is the Brand.</h3>
+      <p class="philosophy-body">We don't want a bar. We want a cart. <strong>No reservation, no dress code, no pretension.</strong> The cart shows up where the party already is — markets, gigs, rooftops, parking lots. We come to you. That's the whole point.</p>
+    </div>
+  </div>
+
+  <!-- TICKER -->
+  <div class="culture-ticker">
+    <div class="culture-ticker-inner">
+      <span class="culture-ticker-item lit">BUURP</span>
+      <span class="culture-ticker-item">·</span>
+      <span class="culture-ticker-item">INDIA'S ONLY ELECTROLYTE RTD</span>
+      <span class="culture-ticker-item">·</span>
+      <span class="culture-ticker-item lit">DELHI 2025</span>
+      <span class="culture-ticker-item">·</span>
+      <span class="culture-ticker-item">DRINK BELCH REPEAT</span>
+      <span class="culture-ticker-item">·</span>
+      <span class="culture-ticker-item lit">220MG ELECTROLYTES</span>
+      <span class="culture-ticker-item">·</span>
+      <span class="culture-ticker-item">8% ABV</span>
+      <span class="culture-ticker-item">·</span>
+      <span class="culture-ticker-item lit">BUURP</span>
+      <span class="culture-ticker-item">·</span>
+      <span class="culture-ticker-item">INDIA'S ONLY ELECTROLYTE RTD</span>
+      <span class="culture-ticker-item">·</span>
+      <span class="culture-ticker-item lit">DELHI 2025</span>
+      <span class="culture-ticker-item">·</span>
+      <span class="culture-ticker-item">DRINK BELCH REPEAT</span>
+      <span class="culture-ticker-item">·</span>
+      <span class="culture-ticker-item lit">220MG ELECTROLYTES</span>
+      <span class="culture-ticker-item">·</span>
+      <span class="culture-ticker-item">8% ABV</span>
+      <span class="culture-ticker-item">·</span>
+    </div>
+  </div>
+
+  <!-- ─── CHAPTER 02: THE BRAND ─── -->
+  <div class="chapter-divider reveal">
+    <div class="chapter-num">02</div>
+    <div class="chapter-info">
+      <div class="chapter-label">Chapter Two</div>
+      <div class="chapter-name">The Brand</div>
+    </div>
+  </div>
+
+  <!-- LOGO -->
+  <div class="section reveal">
+    <div class="section-title">The Logo</div>
+    <div class="section-body">
+      <p>The BUURP wordmark is the brand's primary identity asset. The double-U with the bubble rising through it is not a design flourish — it is the product in typographic form. <strong>Carbonation. Energy. Chaos. Rising.</strong> The pink offset shadow gives it weight and irreverence simultaneously.</p>
+    </div>
+    <div class="logo-grid">
+      <div class="logo-cell dark">
+        <img src="./buurp-logo.png" alt="BUURP on dark" style="mix-blend-mode:lighten;" />
+        <div class="logo-cell-label">Primary — Dark</div>
+      </div>
+      <div class="logo-cell lime">
+        <img src="./buurp-logo.png" alt="BUURP on lime" style="mix-blend-mode:multiply;" />
+        <div class="logo-cell-label">On Brand Colour</div>
+      </div>
+    </div>
+
+    <!-- LOGO DO/DON'T -->
+    <div class="do-dont-grid" style="margin-top: 2rem;">
+      <div class="do-block">
+        <div class="do-label">✓ Do</div>
+        <ul class="do-list">
+          <li>Use on pure black or very dark backgrounds always</li>
+          <li>Give it breathing room — minimum clear space = height of the B</li>
+          <li>Use mix-blend-mode: lighten when placing on coloured backgrounds</li>
+          <li>Let it be big and proud — this mark earns its space</li>
+          <li>Use the full wordmark in all brand contexts</li>
+        </ul>
+      </div>
+      <div class="dont-block">
+        <div class="dont-label">✗ Don't</div>
+        <ul class="dont-list">
+          <li>Never place on white or light backgrounds without treatment</li>
+          <li>Never stretch, compress, or rotate the mark</li>
+          <li>Never use a drop shadow — the offset pink is already the shadow</li>
+          <li>Never recreate in a different font — Bebas Neue is not BUURP</li>
+          <li>Never crop the bubble detail — it is load-bearing</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- COLOUR -->
+  <div class="section reveal">
+    <div class="section-title">Colour System</div>
+    <div class="section-body">
+      <p>BUURP's palette is built for night. Every colour reads on a dark background. Every colour has a cultural reference point. <strong>Lime is energy and irreverence. Pink is aggression and femininity. Orange is heat. Blue is liberation. Black is the stage everything performs on.</strong></p>
+    </div>
+    <div class="color-grid">
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#C9F135;"></div>
+        <div class="swatch-name" style="color:#C9F135;">Buurp Lime</div>
+        <div class="swatch-hex">#C9F135</div>
+        <div class="swatch-hex" style="margin-top:0.2rem; font-size:0.55rem;">Primary · Logo · CTA</div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#FF2B6E;"></div>
+        <div class="swatch-name" style="color:#FF2B6E;">Buurp Pink</div>
+        <div class="swatch-hex">#FF2B6E</div>
+        <div class="swatch-hex" style="margin-top:0.2rem; font-size:0.55rem;">Logo shadow · Rasa · Accent</div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#FF4D1C;"></div>
+        <div class="swatch-name" style="color:#FF4D1C;">Buurp Orange</div>
+        <div class="swatch-hex">#FF4D1C</div>
+        <div class="swatch-hex" style="margin-top:0.2rem; font-size:0.55rem;">Heat · Strike · Warning</div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#00CFFF;"></div>
+        <div class="swatch-name" style="color:#00CFFF;">Moksha Blue</div>
+        <div class="swatch-hex">#00CFFF</div>
+        <div class="swatch-hex" style="margin-top:0.2rem; font-size:0.55rem;">Moksha SKU · Liberation</div>
+      </div>
+      <div class="color-swatch">
+        <div class="swatch-block" style="background:#C47A2A;"></div>
+        <div class="swatch-name" style="color:#C47A2A;">Tatva Coffee</div>
+        <div class="swatch-hex">#C47A2A</div>
+        <div class="swatch-hex" style="margin-top:0.2rem; font-size:0.55rem;">Tatva SKU · Late night</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TYPOGRAPHY -->
+  <div class="section reveal">
+    <div class="section-title">Typography</div>
+    <div class="section-body">
+      <p>Three typefaces. One job each. <strong>Bebas Neue</strong> is the voice — loud, condensed, unapologetic. <strong>DM Mono</strong> is the detail — specs, labels, fine print. <strong>Syne</strong> is the personality — where the brand gets a little feeling.</p>
+    </div>
+    <div class="type-showcase">
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-label">Display</div>
+          <div class="type-name">Bebas Neue</div>
+          <div class="type-use">Headlines · Names · Shouting</div>
+        </div>
+        <div class="type-sample-bebas">DRINK.<br/>BELCH.<br/>REPEAT.</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-label">Utility</div>
+          <div class="type-name">DM Mono</div>
+          <div class="type-use">Labels · Specs · Body copy</div>
+        </div>
+        <div class="type-sample-mono">330ml · 8% ABV · 220mg electrolytes · low sugar<br/>India's only electrolyte RTD cocktail.<br/>Find the cart. No reservation required.</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-label">Personality</div>
+          <div class="type-name">Syne 800</div>
+          <div class="type-use">Taglines · Emotional copy</div>
+        </div>
+        <div class="type-sample-syne">Vibes <span style="text-decoration:line-through; opacity:0.4;">in.</span><br/>Regrets optional.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── CHAPTER 03: THE DROPS ─── -->
+  <div class="chapter-divider reveal">
+    <div class="chapter-num">03</div>
+    <div class="chapter-info">
+      <div class="chapter-label">Chapter Three</div>
+      <div class="chapter-name">The Drops</div>
+    </div>
+  </div>
+
+  <div class="section reveal">
+    <div class="section-title">The Lineup</div>
+    <div class="section-body">
+      <p>Four SKUs. Four moods. One philosophy. Every flavour is <strong>rooted in a Sanskrit concept</strong>, built on an electrolyte base, and designed to taste like something India already knows — just never expected in a can. The lineup reads as a complete philosophical arc: <em>liberation → the divine → pure feeling → the essential element.</em></p>
+    </div>
+    <div class="sku-grid">
+      <div class="sku-card moksha">
+        <div class="sku-can"><img src="./moksha.png" alt="Moksha" /></div>
+        <div class="sku-name">MOKSHA</div>
+        <div class="sku-flavour">Citrus · Mint · Sea Salt</div>
+        <div class="sku-mood">"Liberation in a can."</div>
+        <div class="sku-spec">
+          Mood: Refreshing. Liberating. Cold shower you enjoyed.<br/>
+          Colour: Electric Blue #00CFFF<br/>
+          Sanskrit: मोक्ष — Liberation from the cycle
+        </div>
+      </div>
+      <div class="sku-card soma">
+        <div class="sku-can"><img src="./soma.png" alt="Soma" /></div>
+        <div class="sku-name">SOMA</div>
+        <div class="sku-flavour">Ginger · Kokum · Pepper</div>
+        <div class="sku-mood">"The gods' own drink."</div>
+        <div class="sku-spec">
+          Mood: Spiced. Ancient. Temple-rave energy.<br/>
+          Colour: Buurp Lime #C9F135<br/>
+          Sanskrit: सोम — The divine drink of the Vedas
+        </div>
+      </div>
+      <div class="sku-card rasa">
+        <div class="sku-can"><img src="./rasa.png" alt="Rasa" /></div>
+        <div class="sku-name">RASA</div>
+        <div class="sku-flavour">Hibiscus · Tamarind · Chilli</div>
+        <div class="sku-mood">"Every sip hits a different nerve."</div>
+        <div class="sku-spec">
+          Mood: Aggressive. Floral. Punchy. Tart.<br/>
+          Colour: Buurp Pink #FF2B6E<br/>
+          Sanskrit: रस — Pure feeling, aesthetic essence
+        </div>
+      </div>
+      <div class="sku-card tatva">
+        <div class="sku-can"><img src="./tatva.png" alt="Tatva" /></div>
+        <div class="sku-name">TATVA</div>
+        <div class="sku-flavour">Cold Brew · Cardamom · Jaggery</div>
+        <div class="sku-mood">"Your 9am and 9pm in one can."</div>
+        <div class="sku-spec">
+          Mood: Late night. Focus. Dark energy.<br/>
+          Colour: Coffee Gold #C47A2A<br/>
+          Sanskrit: तत्त्व — The essential element, base truth
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── CHAPTER 04: TONE OF VOICE ─── -->
+  <div class="chapter-divider reveal">
+    <div class="chapter-num">04</div>
+    <div class="chapter-info">
+      <div class="chapter-label">Chapter Four</div>
+      <div class="chapter-name">Tone of Voice</div>
+    </div>
+  </div>
+
+  <div class="section reveal">
+    <div class="section-title">How We Talk</div>
+    <div class="section-body">
+      <p>BUURP doesn't market. It speaks. The brand voice is built from three qualities — not three rules. <strong>Break the rules as long as you keep the feeling.</strong></p>
+    </div>
+    <div class="tone-grid">
+      <div class="tone-card reveal">
+        <div class="tone-icon">01</div>
+        <div class="tone-title">Honest. Never Humble.</div>
+        <div class="tone-body">We say what we mean. We don't over-explain. We don't apologise. We don't say "we believe" — we say "we know." Confidence without arrogance. Swagger without cringe.</div>
+        <div class="tone-example">"We put electrolytes in. No one else did."<br/>"Vibes in. Regrets optional."</div>
+      </div>
+      <div class="tone-card reveal reveal-delay-1">
+        <div class="tone-icon">02</div>
+        <div class="tone-title">Irreverent. Never Stupid.</div>
+        <div class="tone-body">The brand leans into the absurdity of its name without becoming a joke. The humour is dry and knowing — like the smartest person at the party who also happens to be the loudest.</div>
+        <div class="tone-example">"Nah I'm 12." (age gate decline button)<br/>"Go drink a juice box, kid. 🧃"</div>
+      </div>
+      <div class="tone-card reveal reveal-delay-2">
+        <div class="tone-icon">03</div>
+        <div class="tone-title">Desi. Not Apologetically.</div>
+        <div class="tone-body">We use Hindi, Kannada, Tamil without translation. We reference kokum without explaining what it is. The brand assumes cultural fluency. If you know, you know. If you don't — welcome, catch up.</div>
+        <div class="tone-example">"AAO. PEEVO. GAAO."<br/>"RAA. TAAGU. PAADU."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DO DON'T COPY -->
+  <div class="section reveal">
+    <div class="section-title">Writing It Right</div>
+    <div class="do-dont-grid">
+      <div class="do-block">
+        <div class="do-label">✓ Write like this</div>
+        <ul class="do-list">
+          <li>Short sentences. Punchy. Then stop.</li>
+          <li>Use full stops aggressively. Even in the middle.</li>
+          <li>Mix Hindi/regional naturally — don't italicise it</li>
+          <li>Name the flavours like they're sacred: Moksha. Soma. Rasa. Tatva.</li>
+          <li>Talk about the cart like it's a character, not a product</li>
+          <li>"Find the cart." Not "purchase at our location."</li>
+        </ul>
+      </div>
+      <div class="dont-block">
+        <div class="dont-label">✗ Not like this</div>
+        <ul class="dont-list">
+          <li>"We are excited to announce our new product launch"</li>
+          <li>Excessive exclamation marks!!! It's desperate.</li>
+          <li>Translating desi references in parentheses (kokum, a sour fruit)</li>
+          <li>"Enjoy responsibly" as a standalone sentence — always pair it with irreverence</li>
+          <li>Wellness language: "nourishing", "wholesome", "clean"</li>
+          <li>Anything that sounds like a press release</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── CHAPTER 05: THE CULTURE ─── -->
+  <div class="chapter-divider reveal">
+    <div class="chapter-num">05</div>
+    <div class="chapter-info">
+      <div class="chapter-label">Chapter Five</div>
+      <div class="chapter-name">The Culture</div>
+    </div>
+  </div>
+
+  <!-- LANGUAGE POSTERS -->
+  <div class="section reveal">
+    <div class="section-title">Language Posters</div>
+    <div class="section-body">
+      <p>The language poster series is BUURP's most culturally specific asset. Each set is built for a region — the words mean <em>"come, drink, sing"</em> in the local tongue. This is not a translation. <strong>This is an invitation.</strong></p>
+    </div>
+    <div class="poster-strip" id="poster-strip">
+      <!-- Slot 1 — AAO PEEVO GAAO (uploaded) -->
+      <div class="poster-slot">
+        <img src="./poster-aao.png" alt="AAO PEEVO GAAO" onerror="this.parentNode.innerHTML='<div class=\'poster-placeholder\'><div class=\'poster-placeholder-text\'>AAO.<br/>PEEVO.<br/>GAAO.</div><div class=\'poster-placeholder-label\'>poster-aao.png</div></div>'" />
+      </div>
+      <!-- Slot 2 — BANNI KUDI HAADI -->
+      <div class="poster-slot">
+        <img src="./poster-banni.png" alt="BANNI KUDI HAADI" onerror="this.parentNode.innerHTML='<div class=\'poster-placeholder\'><div class=\'poster-placeholder-text\'>BANNI.<br/>KUDI.<br/>HAADI.</div><div class=\'poster-placeholder-label\'>poster-banni.png</div></div>'" />
+      </div>
+      <!-- Slot 3 — RAA TAAGU PAADU -->
+      <div class="poster-slot">
+        <img src="./poster-raa.png" alt="RAA TAAGU PAADU" onerror="this.parentNode.innerHTML='<div class=\'poster-placeholder\'><div class=\'poster-placeholder-text\'>RAA.<br/>TAAGU.<br/>PAADU.</div><div class=\'poster-placeholder-label\'>poster-raa.png</div></div>'" />
+      </div>
+      <!-- Slot 4 — placeholder for next region -->
+      <div class="poster-slot">
+        <div class="poster-placeholder">
+          <div class="poster-placeholder-text">AA.<br/>PEE.<br/>GAAO.</div>
+          <div class="poster-placeholder-label">poster-next.png</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:1rem; font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(242,237,227,0.2);">
+      Save posters as poster-aao.png · poster-banni.png · poster-raa.png in the same folder
+    </div>
+  </div>
+
+  <!-- FULL BLEED — nightlife shot placeholder -->
+  <div class="full-bleed">
+    <img src="./shot-nightlife.png" alt="Nightlife" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+    <div class="full-bleed-placeholder" style="display:none;">
+      <div class="full-bleed-placeholder-text">NIGHTLIFE HERO SHOT</div>
+      <div class="full-bleed-label">shot-nightlife.png · The party found you.</div>
+    </div>
+    <div class="full-bleed-caption">Shot 01 — "The party found you." · Delhi</div>
+  </div>
+
+  <!-- THE BUURPERS -->
+  <div class="section reveal">
+    <div class="section-title">The Buurpers</div>
+    <div class="section-body">
+      <p>The community is the brand. <strong>Sweaty. Loud. Chaotic. Real.</strong> Not polished influencer content — flash photography, blurry movement, mirror selfies, cigarette smoke, people mid-laugh, cans in the air. If it looks too good it's probably not us.</p>
+    </div>
+    <div class="photo-strip" id="photo-strip">
+      <div class="photo-slot x">
+        <img src="./community-1.jpg" alt="" onerror="this.parentNode.innerHTML='<div class=\'photo-placeholder\'><svg width=\'28\' height=\'28\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'white\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><path d=\'m21 15-5-5L5 21\'/></svg><span>community-1.jpg</span></div>'" />
+      </div>
+      <div class="photo-slot t">
+        <img src="./community-2.jpg" alt="" onerror="this.parentNode.innerHTML='<div class=\'photo-placeholder\'><svg width=\'28\' height=\'28\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'white\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><path d=\'m21 15-5-5L5 21\'/></svg><span>community-2.jpg</span></div>'" />
+      </div>
+      <div class="photo-slot w">
+        <img src="./community-3.jpg" alt="" onerror="this.parentNode.innerHTML='<div class=\'photo-placeholder\'><svg width=\'28\' height=\'28\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'white\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><path d=\'m21 15-5-5L5 21\'/></svg><span>community-3.jpg</span></div>'" />
+      </div>
+      <div class="photo-slot s">
+        <img src="./community-4.jpg" alt="" onerror="this.parentNode.innerHTML='<div class=\'photo-placeholder\'><svg width=\'28\' height=\'28\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'white\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><path d=\'m21 15-5-5L5 21\'/></svg><span>community-4.jpg</span></div>'" />
+      </div>
+      <div class="photo-slot x">
+        <img src="./community-5.jpg" alt="" onerror="this.parentNode.innerHTML='<div class=\'photo-placeholder\'><svg width=\'28\' height=\'28\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'white\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><path d=\'m21 15-5-5L5 21\'/></svg><span>community-5.jpg</span></div>'" />
+      </div>
+      <div class="photo-slot t">
+        <img src="./community-6.jpg" alt="" onerror="this.parentNode.innerHTML='<div class=\'photo-placeholder\'><svg width=\'28\' height=\'28\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'white\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><path d=\'m21 15-5-5L5 21\'/></svg><span>community-6.jpg</span></div>'" />
+      </div>
+      <div class="photo-slot w">
+        <img src="./community-7.jpg" alt="" onerror="this.parentNode.innerHTML='<div class=\'photo-placeholder\'><svg width=\'28\' height=\'28\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'white\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><path d=\'m21 15-5-5L5 21\'/></svg><span>community-7.jpg</span></div>'" />
+      </div>
+      <div class="photo-slot s">
+        <img src="./community-8.jpg" alt="" onerror="this.parentNode.innerHTML='<div class=\'photo-placeholder\'><svg width=\'28\' height=\'28\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'white\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><path d=\'m21 15-5-5L5 21\'/></svg><span>community-8.jpg</span></div>'" />
+      </div>
+    </div>
+    <div style="margin-top:1rem; font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(242,237,227,0.2);">
+      Save as community-1.jpg through community-8.jpg · Add more by duplicating a photo-slot div
+    </div>
+  </div>
+
+  <!-- ─── CHAPTER 06: THE CART ─── -->
+  <div class="chapter-divider reveal">
+    <div class="chapter-num">06</div>
+    <div class="chapter-info">
+      <div class="chapter-label">Chapter Six</div>
+      <div class="chapter-name">The Cart</div>
+    </div>
+  </div>
+
+  <div class="section reveal">
+    <div class="section-title">The Flagship</div>
+    <div class="section-body">
+      <p>The cart is not a point-of-sale. <strong>The cart is the brand in physical form.</strong> Neon signs. Smoke emitters. Ice compartments. LED strips. Cans glowing inside. Loud typography. Industrial wheels. The cart rolls in and the party knows something just changed. This is the Avengers entrance shot. This is BUURP in the world.</p>
+    </div>
+
+    <!-- cart image full bleed -->
+    <div class="full-bleed" style="margin-top:2rem;">
+      <img src="./cart-render.png" alt="Cart Render" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+      <div class="full-bleed-placeholder" style="display:none; height:400px;">
+        <div class="full-bleed-placeholder-text">THE CART RENDER</div>
+        <div class="full-bleed-label">cart-render.png · Front / Side / Top-down</div>
+      </div>
+    </div>
+
+    <!-- mythology shot -->
+    <div class="full-bleed" style="margin-top:1px;">
+      <img src="./shot-mythology.png" alt="The Mythology Shot" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+      <div class="full-bleed-placeholder" style="display:none; height:500px;">
+        <div class="full-bleed-placeholder-text">THE MYTHOLOGY SHOT</div>
+        <div class="full-bleed-label">shot-mythology.png · Single cart, empty parking lot, 2am, no people</div>
+      </div>
+      <div class="full-bleed-caption">Shot 25 — "The Legend." · Delhi, 2am</div>
+    </div>
+  </div>
+
+  <!-- ─── CLOSING ─── -->
+  <div class="vision-block" style="border-top: 1px solid rgba(255,255,255,0.06);">
+    <div class="vision-quote" style="font-size: clamp(1.5rem, 4vw, 3.5rem); color: rgba(242,237,227,0.3);">
+      This document is a living thing.<br/>
+      <span style="color: var(--lime);">Add to it. Push it. Break it.<br/>Just don't make it boring.</span>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="book-footer">
+    <div class="book-footer-logo"><img src="./buurp-logo.png" alt="BUURP" /></div>
+    <div class="book-footer-right">
+      The BUURP Culture Book · V1.0<br/>
+      Delhi, India · 2025<br/>
+      For internal use & culture partners<br/>
+      Drink. Belch. Repeat.
+    </div>
+  </div>
+
+  <script>
+    /* scroll reveal */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal, .manifesto-line, [data-scroll]').forEach(el => observer.observe(el));
+
+    /* drag scroll — photo strip */
+    function initDragScroll(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      let isDown = false, startX, scrollLeft;
+      el.addEventListener('mousedown', e => { isDown = true; el.classList.add('dragging'); startX = e.pageX - el.offsetLeft; scrollLeft = el.scrollLeft; });
+      el.addEventListener('mouseleave', () => { isDown = false; el.classList.remove('dragging'); });
+      el.addEventListener('mouseup', () => { isDown = false; el.classList.remove('dragging'); });
+      el.addEventListener('mousemove', e => { if (!isDown) return; e.preventDefault(); el.scrollLeft = scrollLeft - (e.pageX - el.offsetLeft - startX) * 1.5; });
+    }
+
+    initDragScroll('photo-strip');
+    initDragScroll('poster-strip');
+  </script>
+</body>
+</html>
