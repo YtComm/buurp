@@ -15,6 +15,17 @@
     html{scroll-behavior:smooth;}
     body{background:var(--black);color:var(--cream);font-family:'Syne',sans-serif;overflow-x:hidden;cursor:crosshair;}
 
+    /* SCROLL PROGRESS BAR */
+    #scroll-progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--lime) 0%,var(--blue) 50%,var(--pink) 100%);width:0;z-index:999;transition:width 0.15s ease-out;box-shadow:0 0 20px rgba(201,241,53,0.5),0 0 40px rgba(0,207,255,0.3);}
+
+    /* SCROLL VELOCITY INDICATOR */
+    #scroll-velocity{position:fixed;bottom:2rem;right:2rem;z-index:300;width:48px;height:48px;border-radius:50%;border:2px solid rgba(201,241,53,0.3);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:0.6rem;color:rgba(201,241,53,0.5);opacity:0;pointer-events:none;}
+    #scroll-velocity.inactive{opacity:1;}
+
+    /* PARALLAX ADJUSTMENTS */
+    .hero-bloom{transition:transform 0.1s ease-out;}
+    .product-card{transition:transform 0.5s ease;}
+
     /* AGE GATE */
     #age-gate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:var(--black);flex-direction:column;gap:3rem;}
     .age-gate-inner{text-align:center;display:flex;flex-direction:column;align-items:center;gap:2rem;}
@@ -196,7 +207,7 @@
     .footer-marquee-inner{display:flex;gap:3rem;white-space:nowrap;animation:footer-ticker 20s linear infinite;}
     @keyframes footer-ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
     .footer-marquee-item{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,8vw,6rem);line-height:1;letter-spacing:0.05em;flex-shrink:0;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,0.06);}
-    .footer-marquee-item.filled{color:rgba(242,237,227,0.05);-webkit-text-stroke:0;}
+    .footer-marquee-item.filled{color:rgba(255,255,255,1);-webkit-text-stroke:0;}
     .footer-bottom{padding:3rem;display:flex;justify-content:space-between;align-items:center;}
     .footer-logo img{height:80px;width:auto;object-fit:contain;mix-blend-mode:lighten;}
     .footer-center{text-align:center;display:flex;flex-direction:column;gap:0.5rem;}
@@ -248,6 +259,9 @@
 </head>
 <body>
 
+  <div id="scroll-progress"></div>
+  <div id="scroll-velocity"></div>
+
   <div id="curtain"><div class="curtain-half left"></div><div class="curtain-half right"></div></div>
 
   <div id="age-gate">
@@ -256,10 +270,10 @@
         <img src="./buurp-logo.png" alt="BUURP" style="width:clamp(200px,50vw,400px);height:auto;mix-blend-mode:lighten;" />
       </div>
       <div class="age-gate-tagline">India's only electrolyte RTD cocktail.</div>
-      <div class="age-gate-proof">220mg electrolytes · 8% ABV · Desi flavours</div>
+      <div class="age-gate-proof">220mg electrolytes · 12% ABV · Desi flavours</div>
       <div class="age-gate-question">
         Are you 21 or older?<br/>
-        <small style="font-size:0.7em;opacity:0.4;font-family:'DM Mono',monospace;letter-spacing:0.1em;">(We can't actually check. But, like, be cool.)</small>
+        <small style="font-size:0.7em;opacity:0.4;font-family:'DM Mono',monospace;letter-spacing:0.1em;">(We can't actually check. But, like, be cool!!)</small>
       </div>
       <div class="age-btns">
         <button class="age-btn yes" onclick="enterSite()">Hell yes</button>
@@ -308,7 +322,7 @@
         </div>
         <div class="hero-proof">
           <span class="proof-pill">220mg electrolytes</span>
-          <span class="proof-pill">8% ABV</span>
+          <span class="proof-pill">12% ABV</span>
           <span class="proof-pill">Low sugar</span>
           <span class="proof-pill">Desi flavours</span>
         </div>
@@ -316,7 +330,7 @@
           <a href="#products" class="btn-primary">See the drops</a>
           <a href="#find-cart" class="btn-outline">Find the cart →</a>
         </div>
-        <div class="hero-social-proof">Delhi's fastest-growing RTD · Now at select markets &amp; events</div>
+        <div class="hero-social-proof">Bussin.fast-growing RTD · Now at select Bengaluru Outlets &amp; events</div>
       </div>
       <div class="scroll-hint">↓</div>
     </section>
@@ -330,7 +344,7 @@
         <span class="ticker-item">220MG ELECTROLYTES <span class="ticker-dot">✦</span></span>
         <span class="ticker-item">NO HANGOVER PROMISED <span class="ticker-dot">✦</span></span>
         <span class="ticker-item">LOW SUGAR <span class="ticker-dot">✦</span></span>
-        <span class="ticker-item">8% ABV <span class="ticker-dot">✦</span></span>
+        <span class="ticker-item"> ABV <span class="ticker-dot">✦</span></span>
         <span class="ticker-item">MOKSHA <span class="ticker-dot">✦</span></span>
         <span class="ticker-item">SOMA <span class="ticker-dot">✦</span></span>
         <span class="ticker-item">RASA <span class="ticker-dot">✦</span></span>
@@ -338,40 +352,40 @@
         <span class="ticker-item">220MG ELECTROLYTES <span class="ticker-dot">✦</span></span>
         <span class="ticker-item">NO HANGOVER PROMISED <span class="ticker-dot">✦</span></span>
         <span class="ticker-item">LOW SUGAR <span class="ticker-dot">✦</span></span>
-        <span class="ticker-item">8% ABV <span class="ticker-dot">✦</span></span>
+        <span class="ticker-item">12% ABV <span class="ticker-dot">✦</span></span>
       </div>
     </div>
 
     <section id="products">
-      <p class="section-label">The Lineup</p>
+      <p class="section-label">The Drops</p>
       <div class="products-grid">
         <div class="product-card moksha">
           <div class="product-can"><img src="./moksha.png" alt="Moksha" /></div>
           <div class="product-name">MOKSHA</div>
-          <div class="product-tag">Citrus / Mint / Sea Salt</div>
+          <div class="product-tag">SweSa / Lime </div>
           <p class="product-desc">Liberation in a can. Crisp, cold, brutally refreshing. Like a cold shower you actually enjoyed.</p>
-          <div class="product-spec">330ml · 8% ABV · 220mg electrolytes · low sugar</div>
+          <div class="product-spec">330ml · 12% ABV · 220mg electrolytes · low sugar</div>
         </div>
         <div class="product-card soma">
           <div class="product-can"><img src="./soma.png" alt="Soma" /></div>
           <div class="product-name">SOMA</div>
-          <div class="product-tag">Ginger / Kokum / Pepper</div>
+          <div class="product-tag">Sweet /Guava</div>
           <p class="product-desc">The gods' own drink. Spiced, warm, ancient. Pairs well with bad decisions and good people.</p>
-          <div class="product-spec">330ml · 8% ABV · 220mg electrolytes · low sugar</div>
+          <div class="product-spec">330ml · 12% ABV · 220mg electrolytes · low sugar</div>
         </div>
         <div class="product-card rasa">
           <div class="product-can"><img src="./rasa.png" alt="Rasa" /></div>
           <div class="product-name">RASA</div>
-          <div class="product-tag">Hibiscus / Tamarind / Chilli</div>
+          <div class="product-tag">SweSa / Masala</div>
           <p class="product-desc">Pure feeling. Tart, floral, punchy. Every sip hits a different nerve. You'll keep going back.</p>
-          <div class="product-spec">330ml · 8% ABV · 220mg electrolytes · low sugar</div>
+          <div class="product-spec">330ml · 12% ABV · 220mg electrolytes · low sugar</div>
         </div>
         <div class="product-card tatva">
           <div class="product-can"><img src="./tatva.png" alt="Tatva" /></div>
           <div class="product-name">TATVA</div>
-          <div class="product-tag">Cold Brew / Cardamom / Jaggery</div>
+          <div class="product-tag">Cold brew / Coffee </div>
           <p class="product-desc">The base element. Coffee that hits different when it's got a kick. Your 9am and your 9pm in one can.</p>
-          <div class="product-spec">330ml · 8% ABV · 220mg electrolytes · low sugar</div>
+          <div class="product-spec">330ml · 12% ABV · 220mg electrolytes · low sugar</div>
         </div>
       </div>
       <div class="products-cta">
@@ -409,7 +423,7 @@
           <div class="pillar-num">02</div>
           <div class="pillar-content">
             <h3 class="pillar-headline">Desi Flavours. Zero Apology.</h3>
-            <p class="pillar-body">Kokum. Tamarind. Hibiscus. Kala namak. The flavours your nani used and <strong>the craft cocktail bars are now charging ₹800 for</strong>. We bottled your pantry. Nostalgia hits different when it's got 8% ABV.</p>
+            <p class="pillar-body">The flavours your NANI used. <strong>that the craft cocktail bars are now charging ₹800 for</strong>. We bottled your pantry. Nostalgia hits different when it's got 12% ABV.</p>
           </div>
         </div>
         <div class="pillar" data-scroll>
@@ -500,7 +514,7 @@
       <div class="find-cart-inner">
         <p class="section-label">Find the Cart</p>
         <h2 class="find-cart-title">No reservation.<br/><span>No dress code.</span><br/>Just show up.</h2>
-        <p class="find-cart-body">Buurp shows up at markets, gigs, and events across Delhi.<br/>Drop your email and we'll tell you exactly where the cart is this weekend.</p>
+        <p class="find-cart-body">Buurp shows up at markets, gigs, and events across Bengaluru.<br/>Drop your email and we'll tell you exactly where the cart is this weekend.</p>
         <div class="notify-form">
           <input class="notify-input" type="email" placeholder="your@email.com" aria-label="Email address" />
           <button class="notify-btn" onclick="handleNotify(this)">Notify Me →</button>
@@ -535,7 +549,7 @@
         </div>
         <div class="footer-right">
           <p class="footer-tagline">Drink. Belch. Repeat.</p>
-          <p class="footer-legal">© 2025 Buurp Beverages. Delhi, India.</p>
+          <p class="footer-legal">© 2025 Buurp Beverages. Bengaluru, India.</p>
           <p class="footer-legal">Must be 21+ to consume. Drink responsibly.<br/>Or at least responsibly enough.</p>
         </div>
       </div>
@@ -544,6 +558,37 @@
   </div>
 
   <script>
+    let scrollVelocity = 0;
+    let lastScrollY = 0;
+
+    window.addEventListener('scroll', () => {
+      const progress = document.getElementById('scroll-progress');
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrolled = (window.scrollY / docHeight) * 100;
+      progress.style.width = scrolled + '%';
+
+      // Scroll velocity tracking
+      const currentScrollY = window.scrollY;
+      scrollVelocity = Math.abs(currentScrollY - lastScrollY);
+      lastScrollY = currentScrollY;
+
+      const velocityIndicator = document.getElementById('scroll-velocity');
+      if (scrollVelocity > 2) {
+        velocityIndicator.classList.add('active');
+        velocityIndicator.textContent = scrollVelocity > 50 ? '↕ FAST' : scrollVelocity > 20 ? '↕ MED' : '↕ SLOW';
+      } else {
+        velocityIndicator.classList.remove('active');
+      }
+
+      // Parallax effect on hero bloom
+      const hero = document.getElementById('hero');
+      const heroBloom = document.querySelector('.hero-bloom');
+      if (hero && heroBloom && window.scrollY < hero.offsetHeight) {
+        const parallaxOffset = window.scrollY * 0.5;
+        heroBloom.style.transform = `translateY(calc(-50% + ${parallaxOffset * 0.3}px))`;
+      }
+    }, { passive: true });
+
     function playBurpSound() {
       const audio = new Audio('./burp.mp3');
       audio.volume = 0.8; audio.play().catch(()=>{});
@@ -631,7 +676,6 @@
       });
     }
 
-    /* drag-to-scroll on Buurpers strip */
     function initStripDrag() {
       const strip = document.getElementById('buurpers-strip');
       if (!strip) return;
